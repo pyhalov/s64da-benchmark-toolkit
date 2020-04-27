@@ -1,4 +1,4 @@
-
+from os import listdir
 from s64da_benchmark_toolkit.prepare import PrepareBenchmarkFactory, TableGroup
 
 class PrepareBenchmark(PrepareBenchmarkFactory):
@@ -48,15 +48,19 @@ class PrepareBenchmark(PrepareBenchmarkFactory):
     }
 
     def get_ingest_tasks(self, table):
-        use_chunks = self.args.chunks > 1 and table not in ('nation', 'region')
+        psql_copy = f"psql {self.args.dsn} -c \"COPY {table} FROM STDIN WITH DELIMITER '|'\""
+        if self.data_dir:
+            return [f'gunzip -c {self.data_dir}/{file} | {psql_copy}' for
+                        file in listdir(self.data_dir) if file.startswith(table + ".")]
+        else:
+            use_chunks = self.args.chunks > 1 and table not in ('nation', 'region')
 
-        table_code = PrepareBenchmark.TABLE_CODES[table]
+            table_code = PrepareBenchmark.TABLE_CODES[table]
 
-        dbgen_cmd = f'./dbgen -s {self.args.scale_factor} -T {table_code} -o'
-        psql_copy = self.psql_exec_cmd(f"COPY {table} FROM STDIN WITH DELIMITER '|'")
+            dbgen_cmd = f'./dbgen -s {self.args.scale_factor} -T {table_code} -o'
 
-        if use_chunks:
-            return [f'{dbgen_cmd} -S {chunk} -C {self.args.chunks} | {psql_copy}' for
-                    chunk in range(1, self.args.chunks + 1)]
-
-        return [f'{dbgen_cmd} | {psql_copy}']
+            if use_chunks:
+                return [f'{dbgen_cmd} -S {chunk} -C {self.args.chunks} 2>/dev/null | {psql_copy}' for
+                        chunk in range(1, self.args.chunks + 1)]
+    
+            return [f'{dbgen_cmd} 2>/dev/null | {psql_copy}']

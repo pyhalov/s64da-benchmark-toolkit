@@ -2,6 +2,7 @@
 import os
 import re
 import shutil
+import random
 
 from collections import namedtuple
 
@@ -131,14 +132,15 @@ class PrepareBenchmarkFactory:
                 tasks = self.get_ingest_tasks(table)
                 assert isinstance(tasks, list), 'Returned object is not a list'
                 ingest_tasks.extend(tasks)
+            random.shuffle(ingest_tasks)
             self._run_tasks_parallel(ingest_tasks)
 
         print('Adding indices')
         self.add_indexes()
 
-        if self.supports_cluster:
-            print('Swarm64 DA CLUSTER')
-            self.cluster()
+        #if self.supports_cluster:
+        #    print('Swarm64 DA CLUSTER')
+        #    self.cluster()
 
         print('VACUUM-ANALYZE')
         self.vacuum_analyze()

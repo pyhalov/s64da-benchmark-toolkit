@@ -15,4 +15,6 @@ CREATE INDEX IDX_LINEITEM_COMMITDATE ON LINEITEM (L_COMMITDATE);
 CREATE INDEX IDX_LINEITEM_RECEIPTDATE ON LINEITEM (L_RECEIPTDATE);
 CREATE INDEX IDX_ORDERS_ORDERDATE ON ORDERS (O_ORDERDATE);
 
-CREATE STATISTICS lineitem_mcv (ndistinct) ON l_suppkey, l_partkey FROM lineitem;
+create index lineitem_brin on lineitem using brin (l_shipdate, l_commitdate, l_receiptdate, l_quantity);
+create index orders_brin on orders using brin(o_orderdate, o_totalprice);
+-- todo : alter table maintenance workers

@@ -1,0 +1,1 @@
+CREATE STATISTICS lineitem_mcv (ndistinct) ON l_suppkey, l_partkey FROM lineitem;
