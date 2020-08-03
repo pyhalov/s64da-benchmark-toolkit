@@ -551,7 +551,7 @@ ALTER TABLE web_sales SET (parallel_workers = 32);
 ALTER TABLE catalog_sales SET (parallel_workers = 32);
 ALTER TABLE store_sales SET (parallel_workers = 32);
 
-CREATE INDEX customer_address_cache ON customer_address USING swarm64_native_cache (
+CREATE INDEX customer_address_cache ON customer_address USING columnstore (
     ca_address_sk,
     ca_address_id,
     ca_street_number,
@@ -567,7 +567,7 @@ CREATE INDEX customer_address_cache ON customer_address USING swarm64_native_cac
     ca_location_type
 );
 
-CREATE INDEX customer_demographics_cache ON customer_demographics USING swarm64_native_cache (
+CREATE INDEX customer_demographics_cache ON customer_demographics USING columnstore (
     cd_demo_sk,
     cd_gender,
     cd_marital_status,
@@ -579,7 +579,7 @@ CREATE INDEX customer_demographics_cache ON customer_demographics USING swarm64_
     cd_dep_college_count
 );
 
-CREATE INDEX date_dim_cache ON date_dim USING swarm64_native_cache (
+CREATE INDEX date_dim_cache ON date_dim USING columnstore (
     d_date_sk,
     d_date_id,
     d_date,
@@ -610,7 +610,7 @@ CREATE INDEX date_dim_cache ON date_dim USING swarm64_native_cache (
     d_current_year
 );
 
-CREATE INDEX warehouse_cache ON warehouse USING swarm64_native_cache (
+CREATE INDEX warehouse_cache ON warehouse USING columnstore (
     w_warehouse_sk,
     w_warehouse_id,
     w_warehouse_name,
@@ -627,7 +627,7 @@ CREATE INDEX warehouse_cache ON warehouse USING swarm64_native_cache (
     w_gmt_offset
 );
 
-CREATE INDEX ship_mode_cache ON ship_mode USING swarm64_native_cache (
+CREATE INDEX ship_mode_cache ON ship_mode USING columnstore (
     sm_ship_mode_sk,
     sm_ship_mode_id,
     sm_type,
@@ -636,7 +636,7 @@ CREATE INDEX ship_mode_cache ON ship_mode USING swarm64_native_cache (
     sm_contract
 );
 
-CREATE INDEX time_dim_cache ON time_dim USING swarm64_native_cache (
+CREATE INDEX time_dim_cache ON time_dim USING columnstore (
     t_time_sk,
     t_time_id,
     t_time,
@@ -649,19 +649,19 @@ CREATE INDEX time_dim_cache ON time_dim USING swarm64_native_cache (
     t_meal_time
 );
 
-CREATE INDEX reason_cache ON reason USING swarm64_native_cache (
+CREATE INDEX reason_cache ON reason USING columnstore (
     r_reason_sk,
     r_reason_id,
     r_reason_desc
 );
 
-CREATE INDEX income_band_cache ON income_band USING swarm64_native_cache (
+CREATE INDEX income_band_cache ON income_band USING columnstore (
     ib_income_band_sk,
     ib_lower_bound,
     ib_upper_bound
 );
 
-CREATE INDEX item_cache ON item USING swarm64_native_cache (
+CREATE INDEX item_cache ON item USING columnstore (
     i_item_sk,
     i_item_id,
     i_rec_start_date,
@@ -686,7 +686,7 @@ CREATE INDEX item_cache ON item USING swarm64_native_cache (
     i_product_name
 );
 
-CREATE INDEX store_cache ON store USING swarm64_native_cache (
+CREATE INDEX store_cache ON store USING columnstore (
     s_store_sk,
     s_store_id,
     s_rec_start_date,
@@ -718,7 +718,7 @@ CREATE INDEX store_cache ON store USING swarm64_native_cache (
     s_tax_precentage
 );
 
-CREATE INDEX call_center_cache ON call_center USING swarm64_native_cache (
+CREATE INDEX call_center_cache ON call_center USING columnstore (
     cc_call_center_sk,
     cc_call_center_id,
     cc_rec_start_date,
@@ -752,7 +752,7 @@ CREATE INDEX call_center_cache ON call_center USING swarm64_native_cache (
     cc_tax_percentage
 );
 
-CREATE INDEX customer_cache ON customer USING swarm64_native_cache (
+CREATE INDEX customer_cache ON customer USING columnstore (
     c_customer_sk,
     c_customer_id,
     c_current_cdemo_sk,
@@ -773,7 +773,7 @@ CREATE INDEX customer_cache ON customer USING swarm64_native_cache (
     c_last_review_date_sk
 );
 
-CREATE INDEX web_site_cache ON web_site USING swarm64_native_cache (
+CREATE INDEX web_site_cache ON web_site USING columnstore (
     web_site_sk,
     web_site_id,
     web_rec_start_date,
@@ -803,7 +803,7 @@ CREATE INDEX web_site_cache ON web_site USING swarm64_native_cache (
 );
 
 
-CREATE INDEX household_demographics_cache ON household_demographics USING swarm64_native_cache (
+CREATE INDEX household_demographics_cache ON household_demographics USING columnstore (
     hd_demo_sk,
     hd_income_band_sk,
     hd_buy_potential,
@@ -811,7 +811,7 @@ CREATE INDEX household_demographics_cache ON household_demographics USING swarm6
     hd_vehicle_count
 );
 
-CREATE INDEX web_page_cache ON web_page USING swarm64_native_cache (
+CREATE INDEX web_page_cache ON web_page USING columnstore (
     wp_web_page_sk,
     wp_web_page_id,
     wp_rec_start_date,
@@ -828,7 +828,7 @@ CREATE INDEX web_page_cache ON web_page USING swarm64_native_cache (
     wp_max_ad_count
 );
 
-CREATE INDEX promotion_cache ON promotion USING swarm64_native_cache (
+CREATE INDEX promotion_cache ON promotion USING columnstore (
     p_promo_sk,
     p_promo_id,
     p_start_date_sk,
@@ -850,7 +850,7 @@ CREATE INDEX promotion_cache ON promotion USING swarm64_native_cache (
     p_discount_active
 );
 
-CREATE INDEX catalog_page_cache ON catalog_page USING swarm64_native_cache (
+CREATE INDEX catalog_page_cache ON catalog_page USING columnstore (
     cp_catalog_page_sk,
     cp_catalog_page_id,
     cp_start_date_sk,
@@ -862,14 +862,14 @@ CREATE INDEX catalog_page_cache ON catalog_page USING swarm64_native_cache (
     cp_type
 );
 
-CREATE INDEX inventory_cache ON inventory USING swarm64_native_cache (
+CREATE INDEX inventory_cache ON inventory USING columnstore (
     inv_date_sk,
     inv_item_sk,
     inv_warehouse_sk,
     inv_quantity_on_hand
 );
 
-CREATE INDEX store_returns_cache ON store_returns USING swarm64_native_cache (
+CREATE INDEX store_returns_cache ON store_returns USING columnstore (
     sr_returned_date_sk,
     sr_return_time_sk,
     sr_item_sk,
@@ -892,7 +892,7 @@ CREATE INDEX store_returns_cache ON store_returns USING swarm64_native_cache (
     sr_net_loss
 );
 
-CREATE INDEX catalog_returns_cache ON catalog_returns USING swarm64_native_cache (
+CREATE INDEX catalog_returns_cache ON catalog_returns USING columnstore (
     cr_returned_date_sk,
     cr_returned_time_sk,
     cr_item_sk,
@@ -922,7 +922,7 @@ CREATE INDEX catalog_returns_cache ON catalog_returns USING swarm64_native_cache
     cr_net_loss
 );
 
-CREATE INDEX web_returns_cache ON web_returns USING swarm64_native_cache (
+CREATE INDEX web_returns_cache ON web_returns USING columnstore (
     wr_returned_date_sk,
     wr_returned_time_sk,
     wr_item_sk,
@@ -950,7 +950,7 @@ CREATE INDEX web_returns_cache ON web_returns USING swarm64_native_cache (
 );
 
 -- columns removed from the sales tables
-CREATE INDEX web_sales_cache ON web_sales USING swarm64_native_cache (
+CREATE INDEX web_sales_cache ON web_sales USING columnstore (
     ws_sold_date_sk,
     ws_sold_time_sk,
     ws_ship_date_sk,
@@ -979,7 +979,7 @@ CREATE INDEX web_sales_cache ON web_sales USING swarm64_native_cache (
     ws_net_profit
 );
 
-CREATE INDEX catalog_sales_cache ON catalog_sales USING swarm64_native_cache (
+CREATE INDEX catalog_sales_cache ON catalog_sales USING columnstore (
     cs_sold_date_sk,
     cs_sold_time_sk,
     cs_ship_date_sk,
@@ -1011,7 +1011,7 @@ CREATE INDEX catalog_sales_cache ON catalog_sales USING swarm64_native_cache (
     cs_net_profit
 );
 
-CREATE INDEX store_sales_cache ON store_sales USING swarm64_native_cache (
+CREATE INDEX store_sales_cache ON store_sales USING columnstore (
     ss_sold_date_sk,
     ss_sold_time_sk,
     ss_item_sk,

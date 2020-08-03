@@ -94,7 +94,7 @@ ALTER TABLE partsupp SET (parallel_workers = 32);
 ALTER TABLE region SET (parallel_workers = 32);
 ALTER TABLE supplier SET (parallel_workers = 32);
 
-CREATE INDEX part_cache ON part USING swarm64_native_cache (
+CREATE INDEX part_cache ON part USING columnstore (
     p_partkey,
     p_name,
     p_mfgr,
@@ -106,7 +106,7 @@ CREATE INDEX part_cache ON part USING swarm64_native_cache (
     p_comment       -- unused
 );
 
-CREATE INDEX supplier_cache ON supplier USING swarm64_native_cache (
+CREATE INDEX supplier_cache ON supplier USING columnstore (
     s_suppkey,
     s_name,
     s_address,
@@ -116,7 +116,7 @@ CREATE INDEX supplier_cache ON supplier USING swarm64_native_cache (
     s_comment
 );
 
-CREATE INDEX partsupp_cache ON partsupp USING swarm64_native_cache (
+CREATE INDEX partsupp_cache ON partsupp USING columnstore (
     ps_partkey,
     ps_suppkey,
     ps_availqty,
@@ -124,7 +124,7 @@ CREATE INDEX partsupp_cache ON partsupp USING swarm64_native_cache (
     ps_comment     -- unused
 );
 
-CREATE INDEX customer_cache ON customer USING swarm64_native_cache (
+CREATE INDEX customer_cache ON customer USING columnstore (
     c_custkey,
     c_name,
     c_address,
@@ -135,7 +135,7 @@ CREATE INDEX customer_cache ON customer USING swarm64_native_cache (
     c_comment
 );
 
-CREATE INDEX orders_cache ON orders USING swarm64_native_cache (
+CREATE INDEX orders_cache ON orders USING columnstore (
     o_orderkey,
     o_custkey,
     o_orderstatus,
@@ -147,7 +147,7 @@ CREATE INDEX orders_cache ON orders USING swarm64_native_cache (
     o_comment
 );
 
-CREATE INDEX lineitem_cache ON lineitem USING swarm64_native_cache (
+CREATE INDEX lineitem_cache ON lineitem USING columnstore (
     l_orderkey,
     l_partkey,
     l_suppkey,
