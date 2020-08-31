@@ -188,6 +188,11 @@ class Correctness:
         elif result_detail == ResultDetail.VALUE_MISMATCH:
             # truth = self.prepare(truth)
             # result = self.prepare(result)
+            LOG.debug('TRUTH')
+            LOG.debug(truth)
+            LOG.debug('RESULT')
+            LOG.debug(result)
+            LOG.debug(f'mismatch indexes: {mismatch_indexes}')
             return CorrectnessResult.make_mismatch_result(
                 result_detail,
                 truth.loc[mismatch_indexes],
