@@ -186,8 +186,8 @@ class Correctness:
             return CorrectnessResult.make_ok_result()
 
         elif result_detail == ResultDetail.VALUE_MISMATCH:
-            # truth = self.prepare(truth)
-            # result = self.prepare(result)
+            truth = self.prepare(truth)
+            result = self.prepare(result)
             pd.set_option('display.max_rows', None)
             LOG.debug('TRUTH')
             LOG.debug(truth)
