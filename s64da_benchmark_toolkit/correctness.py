@@ -1,5 +1,6 @@
 
 import logging
+import math
 import os
 
 from enum import Enum
@@ -76,18 +77,8 @@ class Correctness:
         return filepath
 
     @classmethod
-    def round_to_precision(cls, value):
-        rounded = ('%.2f' % value)
-        if "." in rounded:
-            return rounded[0:13]
-        else:
-            return rounded[0:12]
-
-    @classmethod
     def match_double_precision(cls, truth_value, result_value):
-        truth_rounded = cls.round_to_precision(truth_value)
-        result_rounded = cls.round_to_precision(result_value)
-        return truth_rounded == result_rounded or abs(truth_value - result_value) <= 0.01
+        return math.isclose(truth_value, result_value, abs_tol=0.009, rel_tol=1e-12)
 
     def prepare(self, df):
         # Sort columns
