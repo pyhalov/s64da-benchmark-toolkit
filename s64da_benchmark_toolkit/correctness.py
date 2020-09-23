@@ -86,6 +86,13 @@ class Correctness:
         return df
 
     @classmethod
+    def is_float64_close(cls, truth_value, result_value):
+        if np.isnan(truth_value) and np.isnan(result_value):
+            return True
+        return math.isclose(truth_value, result_value, abs_tol=0.009, rel_tol=1e-12)
+
+
+    @classmethod
     def check_for_mismatches(cls, truth, result):
         """Checks for mismatches between truth and result.
            Returns a list with the mismatching indexs.
@@ -106,7 +113,7 @@ class Correctness:
         for column_name, column_type in truth_diff.dtypes.items():
             if column_type == 'float64':
                 temp_df = pd.DataFrame(data={'truth': truth_diff[column_name],'result': result_diff[column_name]}, index=truth_diff.index)
-                temp_df['isclose'] = temp_df.apply(lambda x: math.isclose(x['truth'], x['result'], abs_tol=0.009, rel_tol=1e-12), axis=1)
+                temp_df['isclose'] = temp_df.apply(lambda x: Correctness.is_float64_close(x['truth'], x['result']), axis=1)
                 col_comp = temp_df.isclose
             else:
                 # Compare the truth and result columns
