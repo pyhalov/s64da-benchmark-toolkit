@@ -84,56 +84,52 @@ class Correctness:
         # Sort columns
         df = df.sort_index(axis=1)
         # Natsort all rows
-        df = df.reindex(index=order_by_index(df.index, index_natsorted(zip(df.to_numpy()))))
+        df.sort_values(by=list(df.columns), axis=0, inplace=True, na_position='first')
         # Recreate index for comparison later
         df.reset_index(level=0, drop=True, inplace=True)
         return df
 
     @classmethod
     def check_for_mismatches(cls, truth, result):
+        """Checks for mismatches between truth and result.
+           Returns a list with the mismatching indexs.
+           Assumptions:
+           - truth and result have the same columns.
+           - trush and result are both sorted in the same manner.
+        """
+
         merge = truth.merge(result, indicator=True, how='left')
-        differences = merge.loc[lambda x: x['_merge'] != 'both']
+        diff_indexes = merge.index[merge._merge != 'both']
+        if diff_indexes.empty:
+            return []
 
-        mismatches = []
-        for index, _ in differences.iterrows():
-            truth_row = truth.iloc[index]
-            result_row = result.iloc[index]
+        truth_diff = truth.iloc[diff_indexes.to_list()]
+        result_diff = result.iloc[diff_indexes.to_list()]
 
-            for column_name, truth_datum in truth_row.iteritems():
-                result_datum = result_row[column_name]
+        mismatches = set()
+        for column_name, column_type in truth_diff.dtypes.items():
+            if column_type == 'float64':
+                temp_df = pd.DataFrame(data={'truth': truth_diff[column_name],'result': result_diff[column_name]}, index=truth_diff.index)
+                temp_df['isclose'] = temp_df.apply(lambda x: math.isclose(x['truth'], x['result'], abs_tol=0.009, rel_tol=1e-12), axis=1)
+                col_comp = temp_df.isclose
+            else:
+                # Compare the truth and result columns
+                col_comp = truth_diff[column_name].compare(result_diff[column_name])
+                # Convert the result to a Series object
+                col_comp[column_name] = False
+                col_comp = col_comp[column_name]
 
-                if truth.dtypes[column_name] == 'float64':
-                    if np.isnan(truth_datum):
-                        matches = (np.isnan(result_datum) == True)
-                    elif np.isinf(truth_datum):
-                        matches = (np.isinf(result_datum) == True)
-                    else:
-                        matches = cls.match_double_precision(truth_datum, result_datum)
+            col_mismatches = col_comp.index[col_comp == False].tolist()
+            mismatches.update(col_mismatches)
 
-                elif truth.dtypes[column_name] == 'object':
-                    matches = (str(truth_datum) == str(result_datum))
-                else:
-                    matches = (truth_datum == result_datum)
+        return sorted(mismatches)
 
-                if not matches:
-                    mismatches.append(index)
-                    break
-
-        return mismatches
 
     def _check_correctness_impl(self, truth, result):
-
         if truth.empty != result.empty:
             return (ResultDetail.TRUTH_EMPTY, None) if truth.empty else (ResultDetail.RESULT_EMPTY, None)
 
         if truth.shape != result.shape:
-            return (ResultDetail.SHAPE_MISMATCH, None)
-
-        truth.drop_duplicates(inplace=True, ignore_index=True)
-        result.drop_duplicates(inplace=True, ignore_index=True)
-
-        if truth.shape != result.shape:
-            LOG.debug("Rows mismatch after dropping duplicates")
             return (ResultDetail.SHAPE_MISMATCH, None)
 
         truth = self.prepare(truth)
