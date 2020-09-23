@@ -76,10 +76,6 @@ class Correctness:
         filepath = os.path.join(self.correctness_results_folder, f'{query_id}.csv')
         return filepath
 
-    @classmethod
-    def match_double_precision(cls, truth_value, result_value):
-        return math.isclose(truth_value, result_value, abs_tol=0.009, rel_tol=1e-12)
-
     def prepare(self, df):
         # Sort columns
         df = df.sort_index(axis=1)
