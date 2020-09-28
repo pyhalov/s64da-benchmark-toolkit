@@ -76,7 +76,8 @@ class Correctness:
         filepath = os.path.join(self.correctness_results_folder, f'{query_id}.csv')
         return filepath
 
-    def prepare(self, df):
+    @classmethod
+    def prepare(cls, df):
         # Sort columns
         df = df.sort_index(axis=1)
         # Natsort all rows
@@ -135,8 +136,8 @@ class Correctness:
         if truth.shape != result.shape:
             return (ResultDetail.SHAPE_MISMATCH, None)
 
-        truth = self.prepare(truth)
-        result = self.prepare(result)
+        truth = Correctness.prepare(truth)
+        result = Correctness.prepare(result)
 
         # Column names must be same
         if not truth.columns.difference(result.columns).empty:
@@ -148,10 +149,13 @@ class Correctness:
 
         return (ResultDetail.OK, None)
 
-    def check_correctness(self, stream_id, query_number):
+    def check_correctness(self, stream_id, query_number, correctness_path=None, benchmark_path=None):
         LOG.debug(f'Checking Stream={stream_id}, Query={query_number}')
-        correctness_path = self.get_correctness_filepath(query_number)
-        benchmark_path = os.path.join(self.query_output_folder, f'{stream_id}_{query_number}.csv')
+        # TODO: remove the following 4 lines and cleanup function params.
+        if not correctness_path:
+            correctness_path = self.get_correctness_filepath(query_number)
+        if not benchmark_path:
+            benchmark_path = os.path.join(self.query_output_folder, f'{stream_id}_{query_number}.csv')
 
         # Reading truth
         try:
@@ -180,8 +184,8 @@ class Correctness:
             return CorrectnessResult.make_ok_result()
 
         elif result_detail == ResultDetail.VALUE_MISMATCH:
-            truth = self.prepare(truth)
-            result = self.prepare(result)
+            truth = Correctness.prepare(truth)
+            result = Correctness.prepare(result)
             return CorrectnessResult.make_mismatch_result(
                 result_detail,
                 truth.loc[mismatch_indexes],
