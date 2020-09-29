@@ -151,9 +151,10 @@ def test_tpch_precision(correctness):
     assert result_detail == ResultDetail.OK
     assert mismatch_idx == None
 
+
 def test_tpch_precision_big_numbers(correctness):
-    truth = pandas.DataFrame([[326663512979.5298]])
-    result = pandas.DataFrame([[326663512979.33]])
+    truth = pandas.DataFrame([[326663512979.5298],[53785665800278.98]])
+    result = pandas.DataFrame([[326663512979.33],[53785665800280.0]])
 
     result_detail, mismatch_idx = correctness._check_correctness_impl(truth, result)
     assert result_detail == ResultDetail.OK
