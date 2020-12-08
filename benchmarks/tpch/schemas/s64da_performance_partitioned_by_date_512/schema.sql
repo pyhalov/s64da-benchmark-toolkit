@@ -63,7 +63,7 @@ CREATE TABLE orders (
     o_shippriority int NOT NULL,
     o_comment character varying(79) NOT NULL
 ) PARTITION BY HASH(o_orderdate);
-SELECT * FROM partition_by_hash('orders', 50);
+SELECT * FROM partition_by_hash('orders', 512);
 
 CREATE TABLE lineitem (
     l_orderkey bigint NOT NULL,
@@ -83,6 +83,6 @@ CREATE TABLE lineitem (
     l_shipmode character varying(10) NOT NULL,
     l_comment character varying(44) NOT NULL
 ) PARTITION BY HASH(l_shipdate);
-SELECT * FROM partition_by_hash('lineitem', 50);
+SELECT * FROM partition_by_hash('lineitem', 512);
 
 CREATE STATISTICS lineitem_ndistinct (ndistinct) ON l_suppkey, l_partkey FROM lineitem;

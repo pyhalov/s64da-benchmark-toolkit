@@ -22,7 +22,7 @@ CREATE TABLE part (
     p_retailprice double precision NOT NULL,
     p_comment character varying(23) NOT NULL
 ) PARTITION BY HASH(p_partkey);
-SELECT * FROM partition_by_hash('part', 50);
+SELECT * FROM partition_by_hash('part', 512);
 
 CREATE TABLE supplier (
     s_suppkey int NOT NULL,
@@ -33,7 +33,7 @@ CREATE TABLE supplier (
     s_acctbal double precision NOT NULL,
     s_comment character varying(101) NOT NULL
 ) PARTITION BY HASH(s_suppkey);
-SELECT * FROM partition_by_hash('supplier', 50);
+SELECT * FROM partition_by_hash('supplier', 512);
 
 CREATE TABLE partsupp (
     ps_partkey int NOT NULL,
@@ -42,7 +42,7 @@ CREATE TABLE partsupp (
     ps_supplycost double precision NOT NULL,
     ps_comment character varying(199) NOT NULL
 ) PARTITION BY HASH(ps_partkey);
-SELECT * FROM partition_by_hash('partsupp', 50);
+SELECT * FROM partition_by_hash('partsupp', 512);
 
 CREATE TABLE customer (
     c_custkey int NOT NULL,
@@ -54,7 +54,7 @@ CREATE TABLE customer (
     c_mktsegment character varying(10) NOT NULL,
     c_comment character varying(117) NOT NULL
 ) PARTITION BY HASH(c_custkey);
-SELECT * FROM partition_by_hash('customer', 50);
+SELECT * FROM partition_by_hash('customer', 512);
 
 CREATE TABLE orders (
     o_orderkey bigint NOT NULL,
@@ -67,7 +67,7 @@ CREATE TABLE orders (
     o_shippriority int NOT NULL,
     o_comment character varying(79) NOT NULL
 ) PARTITION BY HASH(o_orderkey);
-SELECT * FROM partition_by_hash('orders', 50);
+SELECT * FROM partition_by_hash('orders', 512);
 
 CREATE TABLE lineitem (
     l_orderkey bigint NOT NULL,
@@ -87,6 +87,6 @@ CREATE TABLE lineitem (
     l_shipmode character varying(10) NOT NULL,
     l_comment character varying(44) NOT NULL
 ) PARTITION BY HASH(l_orderkey);
-SELECT * FROM partition_by_hash('lineitem', 50);
+SELECT * FROM partition_by_hash('lineitem', 512);
 
 CREATE STATISTICS lineitem_ndistinct (ndistinct) ON l_suppkey, l_partkey FROM lineitem;
