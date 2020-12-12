@@ -1,11 +1,11 @@
 ALTER TABLE ONLY customer
     ADD CONSTRAINT customer_pk PRIMARY KEY (c_custkey);
 ALTER TABLE ONLY lineitem
-    ADD CONSTRAINT lineitem_pk PRIMARY KEY (l_linenumber, l_orderkey);
+    ADD CONSTRAINT lineitem_pk PRIMARY KEY (l_linenumber, l_orderkey, l_shipdate);
 ALTER TABLE ONLY nation
     ADD CONSTRAINT nation_pk PRIMARY KEY (n_nationkey);
 ALTER TABLE ONLY orders
-    ADD CONSTRAINT orders_pk PRIMARY KEY (o_orderkey);
+    ADD CONSTRAINT orders_pk PRIMARY KEY (o_orderkey, o_orderdate);
 ALTER TABLE ONLY part
     ADD CONSTRAINT part_pk PRIMARY KEY (p_partkey);
 ALTER TABLE ONLY partsupp
