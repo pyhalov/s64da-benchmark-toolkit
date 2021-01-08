@@ -1,4 +1,3 @@
-timeout: 15min
+timeout: 30min
 ignore:
   - 18
-  - 21
