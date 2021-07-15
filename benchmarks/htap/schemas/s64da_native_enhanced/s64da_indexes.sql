@@ -1,16 +1,16 @@
-CREATE INDEX idx_customer_cache ON customer USING columnstore (
+CREATE INDEX idx_customer_cache ON customer USING BRIN (
     c_id
   , c_d_id
   , c_w_id
   , c_nationkey
-  , c_last
-  , c_city
-  , c_phone
-  , c_state
+  , c_discount
   , c_balance
+  , c_ytd_payment
+  , c_payment_cnt
+  , c_delivery_cnt
 );
 
-CREATE INDEX idx_orders_cache ON orders USING columnstore (
+CREATE INDEX idx_orders_cache ON orders USING BRIN (
     o_id
   , o_d_id
   , o_w_id
@@ -21,7 +21,7 @@ CREATE INDEX idx_orders_cache ON orders USING columnstore (
   , o_all_local
 );
 
-CREATE INDEX idx_order_line_cache ON order_line USING columnstore (
+CREATE INDEX idx_order_line_cache ON order_line USING BRIN (
     ol_o_id
   , ol_d_id
   , ol_w_id
@@ -33,7 +33,7 @@ CREATE INDEX idx_order_line_cache ON order_line USING columnstore (
   , ol_amount
 );
 
-CREATE INDEX idx_stock_cache ON stock USING columnstore (
+CREATE INDEX idx_stock_cache ON stock USING BRIN (
     s_i_id
   , s_w_id
   , s_quantity
