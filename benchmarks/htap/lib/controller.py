@@ -33,6 +33,7 @@ class HTAPController:
         # update the shared value to the actual last ingested timestamp
         self.latest_timestamp.value = self.range_delivery_date[1].timestamp()
         self.csv_interval = args.csv_interval if 'csv' in args.output else None
+        self.args.oltp_workers = 128
         self.stats = Stats(self.args.dsn, self.args.oltp_workers, self.args.olap_workers, self.csv_interval, self.args.ignored_queries)
         self.monitor = Monitor(
                 self.stats, self.args.oltp_workers, self.args.olap_workers, self.num_warehouses,
