@@ -5,9 +5,6 @@ CREATE INDEX idx_customer_cache ON customer USING columnstore (
   , c_nationkey
   , c_last
   , c_city
-  , c_phone
-  , c_state
-  , c_balance
 );
 
 CREATE INDEX idx_orders_cache ON orders USING columnstore (
@@ -17,8 +14,6 @@ CREATE INDEX idx_orders_cache ON orders USING columnstore (
   , o_c_id
   , o_entry_d
   , o_carrier_id
-  , o_ol_cnt
-  , o_all_local
 );
 
 CREATE INDEX idx_order_line_cache ON order_line USING columnstore (
@@ -28,9 +23,6 @@ CREATE INDEX idx_order_line_cache ON order_line USING columnstore (
   , ol_number
   , ol_i_id
   , ol_supply_w_id
-  , ol_delivery_d
-  , ol_quantity
-  , ol_amount
 );
 
 CREATE INDEX idx_stock_cache ON stock USING columnstore (
