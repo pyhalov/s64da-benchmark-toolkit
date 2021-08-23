@@ -137,7 +137,7 @@ CREATE TABLE IF NOT EXISTS item (
 );
 
 ALTER TABLE item ADD CONSTRAINT item_pk PRIMARY KEY (i_id);
-SELECT create_reference_table('item')
+SELECT create_reference_table('item');
 
 CREATE TABLE IF NOT EXISTS region (
   r_regionkey int NOT NULL,
