@@ -36,15 +36,15 @@ ALTER TABLE customer ADD CONSTRAINT fkey_customer_nation FOREIGN KEY (
     n_nationkey
 );
 
-ALTER TABLE history ADD CONSTRAINT fkey_history_1 FOREIGN KEY (
-    h_c_w_id
-  , h_c_d_id
-  , h_c_id
-) REFERENCES customer (
-    c_w_id
-  , c_d_id
-  , c_id
-);
+--ALTER TABLE history ADD CONSTRAINT fkey_history_1 FOREIGN KEY (
+--    h_c_w_id
+--  , h_c_d_id
+--  , h_c_id
+--) REFERENCES customer (
+--    c_w_id
+--  , c_d_id
+--  , c_id
+--);
 
 ALTER TABLE history ADD CONSTRAINT fkey_history_2 FOREIGN KEY (
     h_w_id
@@ -70,13 +70,13 @@ ALTER TABLE order_line ADD CONSTRAINT fkey_order_line_1 FOREIGN KEY (
   , o_id
 );
 
-ALTER TABLE order_line ADD CONSTRAINT fkey_order_line_2 FOREIGN KEY (
-    ol_supply_w_id
-  , ol_i_id
-) REFERENCES stock (
-    s_w_id
-  , s_i_id
-);
+--ALTER TABLE order_line ADD CONSTRAINT fkey_order_line_2 FOREIGN KEY (
+--    ol_supply_w_id
+--  , ol_i_id
+--) REFERENCES stock (
+--    s_w_id
+--  , s_i_id
+--);
 
 ALTER TABLE stock ADD CONSTRAINT fkey_stock_1 FOREIGN KEY (
     s_w_id
