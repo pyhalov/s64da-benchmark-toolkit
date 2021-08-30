@@ -1,3 +1,5 @@
+set LOCAL citus.multi_shard_modify_mode TO 'sequential';
+
 -- vim: set ft=sql:
 -- EXPLAIN (FORMAT JSON)
 select

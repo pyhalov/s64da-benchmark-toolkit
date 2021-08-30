@@ -14,6 +14,8 @@ DECLARE
   w_record RECORD;
   d_record RECORD;
   namecount BIGINT;
+  in_h_amount_formatted text;
+  in_timestamp_formatted text;
 BEGIN
 
   UPDATE warehouse
@@ -71,6 +73,8 @@ BEGIN
     LIMIT 1;
   END IF;
 
+  in_h_amount_formatted := to_char(in_h_amount, '9999999.99');
+  in_timestamp_formatted := extract(epoch from in_timestamp);
   UPDATE customer
   SET c_balance = c_balance - in_h_amount
     , c_ytd_payment = c_ytd_payment + in_h_amount
@@ -78,16 +82,15 @@ BEGIN
       CASE
         WHEN c_credit = 'BC' THEN
           substr(
-            format('| %4s %2s %4s %2s %4s $%s %12s %24s',
-                c_id
-              , c_d_id
-              , c_w_id
-              , in_d_id
-              , in_w_id
-              , to_char(in_h_amount, '9999999.99')
-              , extract(epoch from in_timestamp)
-              , c_data
-            ), 1, 500
+                c_id ||  ' '
+               || c_d_id || ' '
+               || c_w_id || ' '
+               || in_d_id || ' '
+               || in_w_id || ' '
+               || in_h_amount_formatted || ' '
+               || in_timestamp_formatted || ' '
+               || c_data
+            , 1, 500
           )
         ELSE c_data
       END

@@ -58,8 +58,13 @@ class DB:
                     conn.conn.autocommit = False
                     cursor = conn.server_side_cursor
 
+                conn.conn.rollback()
+                conn.conn.autocommit = False
+
                 cursor.execute(sql)
                 rows = cursor.fetchall()
+                conn.conn.commit()
+                conn.conn.autocommit = True
 
                 if use_server_side_cursors:
                     conn.conn.rollback()
@@ -92,6 +97,8 @@ class DB:
                 stop = time.time()
                 if plan == None or plan.strip() == '':
                     plan = DB.get_explain_output(conn.conn, sql)
+                conn.conn.rollback()
+                conn.conn.autocommit = False
 
             return Timing(start=start, stop=stop, status=status), query_result, plan
 
