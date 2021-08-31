@@ -137,3 +137,8 @@ BEGIN
   RETURN TRUE;
 END
 $$ LANGUAGE PLPGSQL PARALLEL SAFE;
+
+SELECT create_distributed_function(
+  'new_order(int, int, int, int, int, int[], int[], int[], timestamptz)', 'in_w_id',
+  colocate_with := 'warehouse'
+);

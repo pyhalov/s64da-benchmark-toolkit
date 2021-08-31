@@ -120,3 +120,8 @@ BEGIN
 END
 $$
 LANGUAGE plpgsql PARALLEL SAFE;
+
+SELECT create_distributed_function(
+  'payment(int, int, int, int, int, numeric(12,2), bool, character varying(16), timestamptz)', 'in_w_id',
+  colocate_with := 'warehouse'
+);

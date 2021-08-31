@@ -58,3 +58,8 @@ BEGIN
   END LOOP;
 END;
 $$ LANGUAGE plpgsql;
+
+SELECT create_distributed_function(
+  'delivery(int, int, int, timestamptz)', 'in_w_id',
+  colocate_with := 'warehouse'
+);

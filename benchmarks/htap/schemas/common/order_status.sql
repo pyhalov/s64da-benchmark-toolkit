@@ -57,3 +57,8 @@ BEGIN
   INTO order_rec;
 END
 $$ LANGUAGE PLPGSQL PARALLEL SAFE;
+
+SELECT create_distributed_function(
+  'order_status(int, int, int, varchar, bool)', 'in_c_w_id',
+  colocate_with := 'warehouse'
+);

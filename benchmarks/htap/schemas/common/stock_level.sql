@@ -28,3 +28,8 @@ BEGIN
   RETURN low_stock_count;
 END;
 $$ LANGUAGE plpgsql PARALLEL SAFE;
+
+SELECT create_distributed_function(
+  'stock_level(int, int, int)', 'in_w_id',
+  colocate_with := 'warehouse'
+);
